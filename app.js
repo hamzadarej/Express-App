@@ -16,9 +16,9 @@ mongoose
     console.log(`There was a problem ${error.message}`);
   });
 // http:localhost:5001/users
-/*const users = require("./router/users");
-app.use("/users", users);*/
-
+const users = require("./router/users");
+app.use("/users", users);
+// GET request endpoint at / as a landing page for your API.
 app.get("/", (req, res) => {
   res.status(200).send("Welcome to our app");
 });
