@@ -21,22 +21,15 @@ const getUser = async (req, res, next) => {
 // check includes userName ,userPass, age,fbw ,email
 const checkData = async (req, res, next) => {
   let data;
-  let result;
   const dates = ["userName", "userPass", "age", "fbw", "email"];
-
   try {
     data = await req.body;
-    let dataKeys = Object.keys(data);
+    const dataKeys = Object.keys(data);
     for (let i = 0; i < dates.length; i++) {
-      if (dataKeys.includes(dates[i])) {
-        result = true;
-      } else {
-        result = false;
-      }
-    }
-  if (!result) {
+      
+    if (!dataKeys.includes(dates[i])) {
       return res.status(404).json({ message: "Sorry, data is messing ." });
-    }
+    }}
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
