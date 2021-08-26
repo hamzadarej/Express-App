@@ -35,7 +35,6 @@ const getAllUser = async (req, res) => {
           age: user.age,
           fbw: user.fbw,
           toolStack: user.toolStack,
-          toolStack: user.toolStack,
           email: user.email,
           request: {
             type: "GET",
