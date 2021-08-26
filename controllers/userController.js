@@ -5,7 +5,9 @@ const usersData = require("../model/usersModel");
 const getUser = async (req, res, next) => {
   let user;
   try {
-    user = await usersData.findOne({ userName: req.params.userName });
+    user = await usersData.findOne({
+      userName: req.params.userName,
+    });
 
     if (user == null) {
       return res.status(404).json({ message: "Sorry, user NOT FOUND." });
@@ -14,6 +16,46 @@ const getUser = async (req, res, next) => {
     res.status(500).json({ message: err.message });
   }
   res.user = user;
+  next();
+};
+// check includes userName ,userPass, age,fbw ,email
+const checkData = async (req, res, next) => {
+  let data;
+  let result;
+  const dates = ["userName", "userPass", "age", "fbw", "email"];
+
+  try {
+    data = await req.body;
+    let dataKeys = Object.keys(data);
+    for (let i = 0; i < dates.length; i++) {
+      if (dataKeys.includes(dates[i])) {
+        result = true;
+      } else {
+        result = false;
+      }
+    }
+  if (!result) {
+      return res.status(404).json({ message: "Sorry, data is messing ." });
+    }
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+  res.data = data;
+  next();
+};
+//check old
+const checkOld = async (req, res, next) => {
+  let old;
+  try {
+    old = req.body.age;
+
+    if (old < 18) {
+      return res.status(404).json({ message: "Sorry, user is young." });
+    }
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+  res.old = old;
   next();
 };
 // Get one Employee
@@ -129,4 +171,6 @@ module.exports = {
   addNewUser,
   updateUserData,
   updateManyUsers,
+  checkOld,
+  checkData,
 };

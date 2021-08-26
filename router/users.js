@@ -8,10 +8,12 @@ const {
   addNewUser,
   updateUserData,
   updateManyUsers,
+  checkOld,
+  checkData
 } = require("../controllers/userController");
 // root route
 // GET all users , POST new user
-router.route("/").get(getAllUser).post(addNewUser);
+router.route("/").get(getAllUser).post(checkData,checkOld,addNewUser);
 // route with name value
 router
   .route("/:userName")
