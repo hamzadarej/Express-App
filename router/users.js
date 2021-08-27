@@ -1,22 +1,41 @@
 const express = require("express");
 const router = express.Router();
-const { checkOld, checkData, getUser,checkBelong ,userFirstLetterUpperCase,toolStackAlpha,ageAndFbwToNumber} = require("../middlewares/middleware");
+const {
+  checkOld,
+  checkData,
+  toolStackAlpha,
+  checkBelong,
+  
+  ageAndFbwToNumber,
+} = require("../middlewares/middleware");
 
 const {
   getOneUser,
   getAllUser,
   addNewUser,
+  displayUser,
   updateUserData,
   updateAllUsersData,
+  getUser,
 } = require("../controllers/userController");
 // root route
 // GET all users , POST new user
-router.route("/").get(getAllUser).post(ageAndFbwToNumber,toolStackAlpha,userFirstLetterUpperCase,checkBelong,checkData, checkOld, addNewUser);
+const middleware = [
+  checkData,
+  toolStackAlpha,
+  checkBelong,
+  checkOld,
+  addNewUser,
+];
+router
+.route("/display/:userName")
+.get(displayUser);  
+router.route("/").get(getAllUser).post(middleware);
 // route with name value
 router
   .route("/:userName")
-  .get(getUser,getOneUser)
-  .patch(getUser, updateAllUsersData)
+  .get(getUser,getOneUser) 
+  .patch(getUser, ageAndFbwToNumber, toolStackAlpha, updateAllUsersData)
   .put(getUser, updateUserData);
 
-module.exports = router; 
+module.exports = router;

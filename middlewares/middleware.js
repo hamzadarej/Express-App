@@ -1,22 +1,6 @@
 const usersData = require("../model/usersModel");
 // Middleware
 
-const getUser = async (req, res, next) => {
-  let user;
-  try {
-    user = await usersData.findOne({
-      userName: req.params.userName
-    });
-
-    if (user == null) {
-      return res.status(404).json({ message: "Sorry, user NOT FOUND." });
-    }
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-  res.user = user;
-  next();
-};
 // check includes userName ,userPass, age,fbw ,email
 const checkData = async (req, res, next) => {
   let data;
@@ -68,25 +52,12 @@ const checkBelong = async (req, res, next) => {
   res.fbw = fbw;
   next();
 };
-const userFirstLetterUpperCase = async (req, res, next) => {
-  let upperCase;
-  try {
-    const username = req.body.userName;
-    upperCase = username[0].toUpperCase() + username.slice(1);
-    console.log(upperCase);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
 
-  req.body.userName = upperCase;
-  next();
-};
 const toolStackAlpha = async (req, res, next) => {
   let tools;
   try {
-    const toolStack = req.body.toolStack;
-    tools = toolStack.map((letter) => letter[0]);
-    console.log(tools);
+    const toolStack = await req.body.toolStack;
+    tools = toolStack?.map((letter) => letter[0]);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -114,9 +85,7 @@ const ageAndFbwToNumber = async (req, res, next) => {
 module.exports = {
   checkOld,
   checkData,
-  getUser,
   checkBelong,
-  userFirstLetterUpperCase,
   toolStackAlpha,
   ageAndFbwToNumber,
 };
