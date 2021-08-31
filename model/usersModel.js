@@ -12,11 +12,11 @@ const usersDataSchema = new mongoose.Schema({
     required: [true],
   },
   age: {
-    type: Number,
+    type: String,
     required: [true, "Write age please"],
   },
   fbw: {
-    type: Number,
+    type: String,
 
     required: [true, "Write class please"],
   },

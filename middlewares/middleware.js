@@ -23,7 +23,7 @@ const checkData = async (req, res, next) => {
 const checkOld = async (req, res, next) => {
   let old;
   try {
-    old = req.body.age;
+    old =Number( req.body.age);
 
     if (old < 18) {
       return res.status(404).json({ message: "Sorry, user is young." });
@@ -39,9 +39,10 @@ const checkOld = async (req, res, next) => {
 const checkBelong = async (req, res, next) => {
   let fbw;
   try {
-    fbw = req.body.fbw;
+    fbw = Number(req.body.fbw);
+    
 
-    if (!fbw) {
+    if (fbw!==48) {
       return res
         .status(404)
         .json({ message: "Sorry, user belong not to FBW." });
@@ -81,6 +82,34 @@ const ageAndFbwToNumber = async (req, res, next) => {
   req.body.fbw = fbwToNumber;
   next();
 };
+const firstLetterUpperCase =async (req, res, next) => {
+  try {
+    
+    const users = await usersData.find({ userName: req.params.userName });
+if(users){
+    res.status(200).json(
+      users.map((user) => {
+        return {
+          Id: user._id,
+          userName: user.userName[0].toUpperCase() + user.userName.slice(1),
+          userPass: user.userPass,
+          age: user.age,
+          fbw: user.fbw,
+          toolStack: user.toolStack,
+          email: user.email,
+          request: {
+            type: "GET",
+            url: `http://localhost:5001/users/${user.userName}`,
+          },
+        };
+      })
+    ); }
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+  
+  next()
+}
 
 module.exports = {
   checkOld,
@@ -88,4 +117,5 @@ module.exports = {
   checkBelong,
   toolStackAlpha,
   ageAndFbwToNumber,
+  firstLetterUpperCase
 };

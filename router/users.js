@@ -5,7 +5,7 @@ const {
   checkData,
   toolStackAlpha,
   checkBelong,
-  
+  firstLetterUpperCase,
   ageAndFbwToNumber,
 } = require("../middlewares/middleware");
 
@@ -22,14 +22,14 @@ const {
 // GET all users , POST new user
 const middleware = [
   checkData,
-  toolStackAlpha,
   checkBelong,
   checkOld,
   addNewUser,
 ];
 router
 .route("/display/:userName")
-.get(displayUser);  
+.get(firstLetterUpperCase,displayUser); 
+//http://localhost:5001/Users/ to get all Users 
 router.route("/").get(getAllUser).post(middleware);
 // route with name value
 router

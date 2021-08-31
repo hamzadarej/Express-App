@@ -20,25 +20,7 @@ const getUser = async (req, res, next) => {
 // display UserName upperCase
 const displayUser = async (req, res) => {
   try {
-    const users = await usersData.find({ userName: req.params.userName });
-
-    res.status(200).json(
-      users.map((user) => {
-        return {
-          Id: user._id,
-          userName: user.userName[0].toUpperCase() + user.userName.slice(1),
-          userPass: user.userPass,
-          age: user.age,
-          fbw: user.fbw,
-          toolStack: user.toolStack,
-          email: user.email,
-          request: {
-            type: "GET",
-            url: `http://localhost:5001/users/${user.userName}`,
-          },
-        };
-      })
-    );
+    res.status(200).json(res.user)
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -72,7 +54,11 @@ const getAllUser = async (req, res) => {
 };
 // Get one Employee
 const getOneUser = async (req, res) => {
-  res.status(200).json(res.user);
+  try {
+    res.status(200).json(res.user)
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 };
 // Add new user
 const addNewUser = async (req, res) => {
