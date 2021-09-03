@@ -1,6 +1,6 @@
-const express = require('express');
+const express = require("express");
 const app = express();
-const morgan = require('morgan');
+const morgan = require("morgan");
 //use morgan
 app.use(morgan("dev"));
 // process the json data
@@ -14,14 +14,15 @@ mongoose
   .then(console.log("DB is connected"))
   .catch((error) => {
     console.log(`There was a problem ${error.message}`);
-  });
+  }); 
 // http:localhost:5001/users
 const users = require("./router/users");
 app.use("/users", users);
+const display = require("./router/display");
+app.use("/display", display);
 // GET request endpoint at / as a landing page for your API.
 app.get("/", (req, res) => {
   res.status(200).send("Welcome to our app");
 });
 
 module.exports = app;
-

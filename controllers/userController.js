@@ -1,26 +1,9 @@
 const usersData = require("../model/usersModel");
 
-// Controllers
-const getUser = async (req, res, next) => {
-  let user;
-  try {
-    user = await usersData.findOne({
-      userName: req.params.userName,
-    });
-
-    if (user == null) {
-      return res.status(404).json({ message: "Sorry, USER NOT FOUND." });
-    }
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-  res.user = user;
-  next();
-};
 // display UserName upperCase
 const displayUser = async (req, res) => {
   try {
-    res.status(200).json(res.user)
+    res.status(200).json(res.user);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -55,7 +38,7 @@ const getAllUser = async (req, res) => {
 // Get one Employee
 const getOneUser = async (req, res) => {
   try {
-    res.status(200).json(res.user)
+    res.status(200).json(res.user);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -81,7 +64,7 @@ const addNewUser = async (req, res) => {
   }
 };
 
-// update user up on their name (put)
+// update all user data (put)
 const updateUserData = async (req, res) => {
   try {
     await usersData.updateOne(
@@ -89,6 +72,11 @@ const updateUserData = async (req, res) => {
       {
         $set: {
           userName: req.body.userName,
+          userPass: req.body.userPass,
+          fbw: req.body.fbw,
+          age: req.body.age,
+          toolStack: req.body.toolStack,
+          email: req.body.email,
         },
         $currentDate: {
           userAddedDate: Date.now,
@@ -119,6 +107,9 @@ const updateAllUsersData = async (req, res) => {
           toolStack: req.body.toolStack,
           email: req.body.email,
         },
+      },
+      {
+        new: true,
       }
     );
 
@@ -135,6 +126,5 @@ module.exports = {
   addNewUser,
   updateUserData,
   updateAllUsersData,
-  getUser,
   displayUser,
 };
